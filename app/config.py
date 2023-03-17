@@ -11,5 +11,5 @@ RABBIT_HOST = os.getenv('RABBIT_HOST', 'rabbitmq')
 RABBIT_PORT = os.getenv('RABBIT_PORT', 5672)
 RABBIT_QUEUE = os.getenv('RABBIT_QUEUE', 'statistics_queue')
 
-KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
-KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092')
+KAFKA_TOPIC = os.getenv('KAFKA_TOPIC', 'statistics')
+KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9093')
