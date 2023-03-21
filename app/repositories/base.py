@@ -17,7 +17,8 @@ class BaseRepository(RepositoryInterface):
         self.session = session
 
     async def get_by_id(self, obj_id: int) -> Model | None:
-        result = await self.session.scalars(select(self.model).where(getattr(self.model, 'id') == obj_id))  #.options(joinedload(self.model.owner)))
+        result = await self.session.scalars(
+            select(self.model).where(getattr(self.model, 'id') == obj_id))
         obj = result.one_or_none()
         return obj
 
@@ -31,7 +32,7 @@ class BaseRepository(RepositoryInterface):
         objects = result.all()
         return objects
 
-    async def get_all(self) -> list[Model]:
+    async def get_all(self) -> list[Model | None]:
         result = await self.session.scalars(select(self.model))
         objects = result.all()
         return objects

@@ -25,7 +25,3 @@ class ListOut(BaseModel):
 
 class ListOutWithNotes(ListOut):
     notes: list[NoteOut] = []
-
-
-class ListByUser(BaseModel):
-    user_id: int
