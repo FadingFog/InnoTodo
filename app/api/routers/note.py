@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from app.schemas.note import NoteCreate, NoteOut
 from app.services.note import NoteServices
 
-router = APIRouter()
+router = APIRouter(tags=['Notes'])
 
 
 @router.get("/aboba")
@@ -14,35 +14,35 @@ async def get_aboba(request: Request):
     return JSONResponse({'header': header})
 
 
-@router.post("/notes", tags=['Notes'], response_model=NoteOut)
+@router.post("/notes", response_model=NoteOut)
 async def create_note(input_schema: NoteCreate, service: NoteServices = Depends(NoteServices)):
     note = await service.create(input_schema)
 
     return note
 
 
-@router.get("/notes/{id}", tags=['Notes'], response_model=NoteOut)
+@router.get("/notes/{id}", response_model=NoteOut)
 async def retrieve_note(note_id: int, service: NoteServices = Depends(NoteServices)):
     note = await service.retrieve(note_id)
 
     return note
 
 
-@router.patch("/notes/{id}", tags=['Notes'], status_code=204)
+@router.patch("/notes/{id}", status_code=204)
 async def update_note(note_id: int, input_schema: NoteOut, service: NoteServices = Depends(NoteServices)):
     result = await service.update(note_id, input_schema)
 
 
-@router.delete("/notes/{id}", tags=['Notes'], status_code=204)
+@router.delete("/notes/{id}", status_code=204)
 async def delete_note(note_id: int, service: NoteServices = Depends(NoteServices)):
     result = await service.delete(note_id)
 
 
-@router.post("/notes/{id}/done", tags=['Notes'])
+@router.post("/notes/{id}/done")
 async def mark_note_done(note_id: int, service: NoteServices = Depends(NoteServices)):
     result = await service.mark_note_done(note_id)
 
 
-@router.post("/notes/{id}/undone", tags=['Notes'])
+@router.post("/notes/{id}/undone")
 async def mark_note_undone(note_id: int, service: NoteServices = Depends(NoteServices)):
     result = await service.mark_note_undone(note_id)
