@@ -1,15 +1,16 @@
-import os
-
-from dotenv import load_dotenv
-
-load_dotenv()
+from pydantic import BaseSettings
 
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql+asyncpg://postgres:postgres@localhost:5432')
+class Settings(BaseSettings):
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@postgres:5432/postgres"
 
-RABBIT_HOST = os.getenv('RABBIT_HOST', 'rabbitmq')
-RABBIT_PORT = os.getenv('RABBIT_PORT', 5672)
-RABBIT_QUEUE = os.getenv('RABBIT_QUEUE', 'statistics_queue')
+    PRIVATE_SECRET_KEY: str = 'Hdpl8E4HNSYjI4YcLF2TjqgEMFaeghratyEe6lbVRVs='
 
-KAFKA_TOPIC = os.getenv('KAFKA_TOPIC', 'statistics')
-KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9093')
+    KAFKA_TOPIC: str = 'statistics'
+    KAFKA_BOOTSTRAP_SERVERS: str = 'kafka:9093'
+
+    class Config:
+        env_file = ".env"
+
+
+settings = Settings()
