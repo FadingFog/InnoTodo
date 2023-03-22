@@ -5,7 +5,7 @@ from app.models import ListTodo
 from app.repositories.base import BaseRepository, Model
 
 
-class ListRepository(BaseRepository):
+class ListRepository(BaseRepository[ListTodo]):
     model = ListTodo
 
     async def get_by_id_with_notes(self, list_id: int) -> Model:

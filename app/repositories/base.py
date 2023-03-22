@@ -1,5 +1,5 @@
 from abc import abstractproperty
-from typing import TypeVar, Type, Any
+from typing import TypeVar, Type, Any, Generic
 
 from sqlalchemy import select, delete, update, Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,7 +10,7 @@ from app.models.base import Base
 Model = TypeVar('Model', bound=Base)
 
 
-class BaseRepository(RepositoryInterface):
+class BaseRepository(RepositoryInterface, Generic[Model]):
     model: Type[Model] = abstractproperty
 
     def __init__(self, session: AsyncSession):

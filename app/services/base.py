@@ -1,5 +1,5 @@
 from abc import abstractproperty
-from typing import TypeVar, Any, Type
+from typing import TypeVar, Any, Type, Generic
 
 from fastapi import HTTPException
 from pydantic import BaseModel
@@ -14,7 +14,7 @@ Model = TypeVar('Model', bound=Base)
 Repository = TypeVar('Repository', bound=RepositoryInterface)
 
 
-class BaseServices:
+class BaseServices(Generic[Model]):
     repository: Repository = abstractproperty
     model: Type[Model] = abstractproperty
 

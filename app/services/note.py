@@ -8,7 +8,7 @@ from app.repositories.note import NoteRepository
 from app.services.base import BaseServices
 
 
-class NoteServices(BaseServices):
+class NoteServices(BaseServices[Note]):
     repository = NoteRepository
     model = Note
 

@@ -7,7 +7,7 @@ from app.repositories.list import ListRepository
 from app.services.base import BaseServices
 
 
-class ListServices(BaseServices):
+class ListServices(BaseServices[ListTodo]):
     repository = ListRepository
     model = ListTodo
 
