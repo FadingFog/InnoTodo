@@ -6,8 +6,11 @@ from app.schemas.note import NoteOut
 
 
 class ListCreate(BaseModel):
-    owner_id: int
     title: str
+
+
+class ListCreateInternal(ListCreate):
+    owner_id: str
 
 
 class ListUpdate(BaseModel):

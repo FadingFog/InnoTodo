@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 
-from app.schemas.list import ListOut, ListCreate, ListUpdate, ListOutWithNotes
+from app.schemas.list import ListOut, ListCreate, ListUpdate, ListOutWithNotes, ListCreateInternal
 from app.services.list import ListServices
 
 router = APIRouter(tags=['Lists'])
 
 
 @router.post("/lists", response_model=ListOut)
-async def create_list(input_schema: ListCreate, service: ListServices = Depends(ListServices)):
-    list_todo = await service.create(input_schema)
+async def create_list(request: Request, input_schema: ListCreate, service: ListServices = Depends(ListServices)):
+    create_schema = ListCreateInternal(owner_id=request.state.user_id, **input_schema.dict())
+    list_todo = await service.create(create_schema)
 
     return list_todo
 

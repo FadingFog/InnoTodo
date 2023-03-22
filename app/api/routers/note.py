@@ -1,17 +1,9 @@
 from fastapi import APIRouter, Depends
-from fastapi.requests import Request
-from fastapi.responses import JSONResponse
 
 from app.schemas.note import NoteCreate, NoteOut
 from app.services.note import NoteServices
 
 router = APIRouter(tags=['Notes'])
-
-
-@router.get("/aboba")
-async def get_aboba(request: Request):
-    header = request.headers.get('Authorization')
-    return JSONResponse({'header': header})
 
 
 @router.post("/notes", response_model=NoteOut)

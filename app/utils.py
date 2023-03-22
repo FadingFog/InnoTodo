@@ -1,15 +1,15 @@
-from passlib.context import CryptContext
+from jose import jwt
+
+from app.config import settings
 
 
-class PasswordHelper:
-    def __init__(self):
-        self.context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+class TokenHelper:
+    PRIVATE_SECRET_KEY: str = settings.PRIVATE_SECRET_KEY
+    ALGORITHM: str = "HS256"
 
-    def verify_password(self, raw_password: str, hash_password: str) -> bool:
-        return self.context.verify(raw_password, hash_password)
-
-    def get_hash_password(self, raw_password: str) -> str:
-        return self.context.hash(raw_password)
+    def get_token_payload(self, token: str):
+        payload = jwt.decode(token, self.PRIVATE_SECRET_KEY, algorithms=[self.ALGORITHM])
+        return payload
 
 
-password_helper = PasswordHelper()
+token_helper = TokenHelper()
