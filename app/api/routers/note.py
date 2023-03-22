@@ -21,28 +21,28 @@ async def create_note(input_schema: NoteCreate, service: NoteServices = Depends(
     return note
 
 
-@router.get("/notes/{id}", response_model=NoteOut)
-async def retrieve_note(note_id: int, service: NoteServices = Depends(NoteServices)):
-    note = await service.retrieve(note_id)
+@router.get("/notes/{pk}", response_model=NoteOut)
+async def retrieve_note(pk: int, service: NoteServices = Depends(NoteServices)):
+    note = await service.retrieve(pk)
 
     return note
 
 
-@router.patch("/notes/{id}", status_code=204)
-async def update_note(note_id: int, input_schema: NoteOut, service: NoteServices = Depends(NoteServices)):
-    result = await service.update(note_id, input_schema)
+@router.patch("/notes/{pk}", status_code=204)
+async def update_note(pk: int, input_schema: NoteOut, service: NoteServices = Depends(NoteServices)):
+    result = await service.update(pk, input_schema)
 
 
-@router.delete("/notes/{id}", status_code=204)
-async def delete_note(note_id: int, service: NoteServices = Depends(NoteServices)):
-    result = await service.delete(note_id)
+@router.delete("/notes/{pk}", status_code=204)
+async def delete_note(pk: int, service: NoteServices = Depends(NoteServices)):
+    result = await service.delete(pk)
 
 
-@router.post("/notes/{id}/done")
-async def mark_note_done(note_id: int, service: NoteServices = Depends(NoteServices)):
-    result = await service.mark_note_done(note_id)
+@router.post("/notes/{pk}/done")
+async def mark_note_done(pk: int, service: NoteServices = Depends(NoteServices)):
+    result = await service.mark_note_done(pk)
 
 
-@router.post("/notes/{id}/undone")
-async def mark_note_undone(note_id: int, service: NoteServices = Depends(NoteServices)):
-    result = await service.mark_note_undone(note_id)
+@router.post("/notes/{pk}/undone")
+async def mark_note_undone(pk: int, service: NoteServices = Depends(NoteServices)):
+    result = await service.mark_note_undone(pk)
