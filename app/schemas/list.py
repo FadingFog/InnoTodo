@@ -10,7 +10,7 @@ class ListCreate(BaseModel):
 
 
 class ListCreateInternal(ListCreate):
-    owner_id: str
+    owner_id: int
 
 
 class ListUpdate(BaseModel):

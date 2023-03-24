@@ -39,7 +39,7 @@ services:
       - ./:/app
     env_file:
       - ./.env
-    ports:
+    expose:
       - "8000:8000"
     depends_on:
       - db
