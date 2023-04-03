@@ -16,13 +16,12 @@ spec:
     spec:
       containers:
         - name: core-app
-          image: inno_todo-backend
+          image: fadingfog/innotodo:core
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: core-config
-          imagePullPolicy: Never
 ---
 apiVersion: v1
 kind: Service
