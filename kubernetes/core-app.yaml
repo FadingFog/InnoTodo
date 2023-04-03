@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: core-app
-          image: fadingfog/innotodo:core
+          image: fadingfog/innotodo-core
           ports:
             - containerPort: 8000
           envFrom:
