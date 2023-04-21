@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-app-depl
+  labels:
+    app: core-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core-app
+  template:
+    metadata:
+      labels:
+        app: core-app
+    spec:
+      containers:
+        - name: core-app
+          image: fadingfog/innotodo-core
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: core-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-app-svc
+spec:
+  selector:
+    app: core-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-core-depl
+  labels:
+    app: postgres-core
+spec:
+  replicas: 1
+  serviceName: postgres-core-svc
+  selector:
+    matchLabels:
+      app: postgres-core
+  template:
+    metadata:
+      labels:
+        app: postgres-core
+    spec:
+      containers:
+        - name: postgres-core
+          image: postgres:alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: core-config
+          volumeMounts:
+            - name: postgres-core-pv
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-core-pv
+          persistentVolumeClaim:
+            claimName: postgres-core-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-core-svc
+spec:
+  selector:
+    app: postgres-core
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
