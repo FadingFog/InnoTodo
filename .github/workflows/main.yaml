@@ -1,4 +1,4 @@
-name: InnoTodo Core - Docker build, push
+name: InnoTodo Core - Test & Coverage; Docker build, push
 
 on:
   push:
@@ -6,10 +6,55 @@ on:
       - "dev"
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.11' ]
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: '--health-cmd "pg_isready" --health-interval 5s --health-timeout 5s --health-retries 6 --health-start-period 20s'
+
+    name: Test on Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip setuptools wheel poetry
+          poetry config virtualenvs.create false
+          poetry install --no-root --no-interaction --no-ansi
+
+      - name: Test with pytest and calculate coverage
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          coverage run -m pytest && coverage report && coverage xml
+
+      - name: Publish in Covecov
+        uses: codecov/codecov-action@v3
+        with:
+          verbose: true
+          files: ./coverage.xml
+
   docker:
+    runs-on: ubuntu-latest
+    needs: [test]
     env:
       IMAGE: fadingfog/innotodo-core
-    runs-on: ubuntu-latest
     steps:
       - name: Prepare
         id: prep
