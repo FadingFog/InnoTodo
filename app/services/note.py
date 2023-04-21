@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlalchemy import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,10 +19,18 @@ class NoteServices(BaseServices[Note]):
         values = {'status': Note.StatusEnum.DONE}
 
         result = await self._repository.update(note_id, values)
+
+        if result.rowcount < 1:
+            raise HTTPException(status_code=404)
+
         return result
 
     async def mark_note_undone(self, note_id: int) -> Result:
         values = {'status': Note.StatusEnum.IN_PROGRESS}
 
         result = await self._repository.update(note_id, values)
+
+        if result.rowcount < 1:
+            raise HTTPException(status_code=404)
+
         return result

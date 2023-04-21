@@ -1,7 +1,7 @@
 from typing import Protocol, Any
 
 
-class RepositoryInterface(Protocol):
+class RepositoryInterface(Protocol):  # pragma: no cover
     async def get_by_id(self, obj_id: int):
         ...
 

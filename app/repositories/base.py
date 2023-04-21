@@ -23,21 +23,29 @@ class BaseRepository(RepositoryInterface, Generic[Model]):
         return obj
 
     async def get_one_by_field(self, field: str, value: Any) -> Model | None:
-        result = await self.session.scalars(select(self.model).where(getattr(self.model, field) == value))
-        obj = result.one_or_none()
-        return obj
+        try:
+            result = await self.session.scalars(select(self.model).where(getattr(self.model, field) == value))
+            obj = result.one_or_none()
+            return obj
+
+        except AttributeError:
+            return None
 
     async def get_all_by_field(self, field: str, value: Any) -> list[Model | None]:
-        result = await self.session.scalars(select(self.model).where(getattr(self.model, field) == value))
-        objects = result.all()
-        return objects
+        try:
+            result = await self.session.scalars(select(self.model).where(getattr(self.model, field) == value))
+            objects = result.all()
+            return objects
+
+        except AttributeError:
+            return list()
 
     async def get_all(self) -> list[Model | None]:
         result = await self.session.scalars(select(self.model))
         objects = result.all()
         return objects
 
-    async def create(self, obj: Model) -> Model:
+    async def create(self, obj: Model) -> Model:  # TODO check if object with unique values already exists
         self.session.add(obj)
         await self.session.flush()
         await self.session.refresh(obj)

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi_signals import initiate_task
 
-from app.schemas.note import NoteCreate, NoteOut
+from app.schemas.note import NoteCreate, NoteOut, NoteUpdate
 from app.services.note import NoteServices
 from app.tasks import statistics_handler, ActionEnum
 
@@ -24,7 +24,7 @@ async def retrieve_note(pk: int, service: NoteServices = Depends(NoteServices)):
 
 
 @router.patch("/notes/{pk}", status_code=204)
-async def update_note(pk: int, input_schema: NoteOut, service: NoteServices = Depends(NoteServices)):
+async def update_note(pk: int, input_schema: NoteUpdate, service: NoteServices = Depends(NoteServices)):
     result = await service.update(pk, input_schema)
 
 

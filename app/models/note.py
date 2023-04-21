@@ -9,7 +9,7 @@ from app.models.base import BaseModel
 class Note(BaseModel):
     __tablename__ = "note"
 
-    class StatusEnum(enum.Enum):
+    class StatusEnum(str, enum.Enum):
         IN_PROGRESS = "in_progress"
         DONE = "done"
 
